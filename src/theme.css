@@ -1,0 +1,95 @@
+/* Aède theme on top of Arc's foundation.css (kept as copied). The Figma file "Aède" has priority
+   over Arc: whenever the two differ, the Figma value is written here. Variable names are Arc's. */
+
+/* Figma: all radii are 8 px (radius/small), and Geist is the only font. */
+:root {
+  --radius-control: 0.5rem;
+  --radius-panel: 0.5rem;
+  --radius-surface: 0.5rem;
+  --font-display: "Geist Variable", sans-serif;
+  --font-body: "Geist Variable", sans-serif;
+  /* Figma letter spacing: -2 % for text, -4 % for the large heading. */
+  --tracking-body: -0.02em;
+  --tracking-display: -0.04em;
+
+  /* Figma variables, light mode. */
+  --background: #ffffff;
+  --surface: #fcfcfc;
+  --surface-raised: #f1f1f1;
+  --surface-muted: #f8f8f8;
+  --foreground: #0b0b0b;
+  --text-secondary: #585858;
+  --text-muted: #7d7d7d;
+  --border: #e9e9e9;
+  --shadow-key: rgb(27 27 27 / 0.2);
+  --border-subtle: #f3f3f3;
+  --border-strong: #c4c4c4;
+  --success: #007b12;
+  --danger: #cd1526;
+  /* Figma status/success-subtle and status/danger-subtle: the faint fills behind the variation badges. */
+  --success-subtle: #007b121c;
+  --danger-subtle: #cd15261c;
+  /* Figma heatmap/level-0 to level-4: the five shades of the activity calendar. */
+  --heatmap-0: #ededed;
+  --heatmap-1: #b9b9b9;
+  --heatmap-2: #8b8b8b;
+  --heatmap-3: #5d5d5d;
+  --heatmap-4: #353535;
+  /* Figma chart/bar: the bars of the month chart. */
+  --chart-bar: #7c7c7c;
+  /* Figma status/danger-solid and text/on-danger: a red with white text, the same in both modes (danger itself turns light in dark mode). */
+  --danger-solid: #cd1526;
+  --on-danger: #ffffff;
+  /* Figma control/thumb: the fill of the current sidebar item. */
+  --nav-active: #f1f1f1;
+  /* Figma overlay/scrim: the dark veil behind a dialog. */
+  --overlay-scrim: rgba(3, 3, 3, 0.46);
+  /* A list row under the pointer: a veil of the text color, so it shows in light and in dark
+     (the raised surface is the same as the surface in dark, it cannot be used for this). */
+  --row-hover: color-mix(in oklab, var(--foreground) 5%, transparent);
+}
+
+:root[data-theme="dark"] {
+  --background: #141414;
+  --surface: #191919;
+  --surface-raised: #191919;
+  --surface-muted: #242424;
+  --foreground: #f2f2f2;
+  --text-secondary: #b4b4b4;
+  --text-muted: #8c8c8c;
+  --border: #2b2b2b;
+  --shadow-key: rgb(27 27 27 / 0.72);
+  --border-subtle: #222222;
+  --border-strong: #484848;
+  --success: #4cd676;
+  --danger: #ff736d;
+  --success-subtle: #4cd6761c;
+  --danger-subtle: #ff736d1c;
+  --heatmap-0: #252525;
+  --heatmap-1: #484848;
+  --heatmap-2: #6c6c6c;
+  --heatmap-3: #959595;
+  --heatmap-4: #bebebe;
+  --chart-bar: #929292;
+  --nav-active: #1d1d1d;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-body);
+  -webkit-font-smoothing: antialiased;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}

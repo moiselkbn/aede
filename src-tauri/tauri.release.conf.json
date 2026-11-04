@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "bundle": {
+    "macOS": {
+      "frameworks": [
+        "target/release/libggml.0.dylib",
+        "target/release/libggml-base.0.dylib",
+        "target/release/libggml-cpu.0.dylib",
+        "target/release/libggml-metal.0.dylib",
+        "target/release/libllama.0.dylib",
+        "target/release/libllama-common.0.dylib"
+      ]
+    }
+  }
+}

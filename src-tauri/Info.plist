@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Aède utilise le micro pour enregistrer votre voix pendant que vous maintenez le raccourci. L'audio reste sur votre Mac et n'est jamais envoyé sur internet.</string>
+</dict>
+</plist>

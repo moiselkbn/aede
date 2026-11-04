@@ -1,0 +1,96 @@
+/* The pill of the notch: the shape and the look shared by everything it shows (Pill.tsx). It
+   hangs from the top of the screen: a flare on each side of the top, rounded bottom corners.
+   The flares are drawn outside the body, which clips its content. The pill has the size of its
+   content: Pill.tsx scales the body from the size of the notch to this size, and slides the
+   flares along its edges. */
+.pill {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  width: max-content;
+  transform: translateX(-50%);
+}
+
+.pill-flare {
+  position: absolute;
+  top: 0;
+  width: 6px;
+  height: 6px;
+  will-change: transform;
+}
+
+/* Black outside a circle of 6 px centred on the bottom corner of the flare's box. */
+.pill-flare-left {
+  left: -6px;
+  background: radial-gradient(circle at 0 100%, transparent 5.5px, #000 6px);
+}
+
+.pill-flare-right {
+  right: -6px;
+  background: radial-gradient(circle at 100% 100%, transparent 5.5px, #000 6px);
+}
+
+/* The box. Scaled while the pill comes out, so its bottom corners are squashed for a moment. */
+.pill-body {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  border-radius: 0 0 26px 26px;
+  overflow: hidden;
+  color: #fff;
+  /* Geist is the font of Aède, bundled with the app (see indicator-main.tsx). The symbols it
+     does not have (⌃ ⌥ ⌘ →) come from the system font. */
+  font-family: "Geist Variable", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+
+/* The two looks, chosen in pill-style.ts. */
+.pill-style-black {
+  background: #000;
+}
+
+.pill-style-fade {
+  background: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.9) 50%, rgba(36, 38, 51, 0.21) 100%);
+}
+
+/* The soft light on the edges. It starts under the notch and fades in: next to the notch
+   itself, anything lighter than its deep black would show. */
+.pill-style-fade::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 28px rgba(255, 255, 255, 0.12),
+    inset 0 -1px 2.4px rgba(255, 255, 255, 0.35);
+  mask-image: linear-gradient(180deg, transparent var(--notch), #000 calc(var(--notch) + 40px));
+  pointer-events: none;
+}
+
+/* Scaled the opposite way to the box, so that the content keeps its natural size in the
+   middle of the box, which clips it. It also fades in. */
+.pill-counter {
+  transform-origin: 50% 0;
+  will-change: transform, opacity;
+}
+
+/* The dot of a status line: green when it went well, red when it failed. */
+.pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.pill-ok {
+  background: linear-gradient(180deg, #8eff25, #7cd32a);
+  box-shadow: 0 0 0 0.2px #8de73c;
+}
+
+.pill-fail {
+  background: linear-gradient(180deg, #ff5b4d, #d9392d);
+  box-shadow: 0 0 0 0.2px #f04b3e;
+}

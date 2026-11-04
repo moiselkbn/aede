@@ -1,0 +1,1139 @@
+/* Shell of the main window, drawn from the Figma screens "Écran 01" (sidebar, top bar, page).
+   Only Arc tokens (foundation.css) and the Figma overrides (theme.css): no raw colors. */
+
+.shell {
+  display: flex;
+  height: 100vh;
+  background: var(--background);
+}
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 216px;
+  box-sizing: border-box;
+  padding: var(--space-3);
+  background: var(--surface-muted);
+  border-right: 1px solid var(--border);
+}
+
+/* Same height as the window buttons of the Figma frame. */
+.sidebar-top {
+  height: 24px;
+  flex: none;
+}
+
+.sidebar-logo {
+  padding-inline: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+/* The wordmark is a mask painted with the label color (see Logo.tsx): here the foreground. */
+.sidebar-logo .logo {
+  background: var(--foreground);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--control-height-sm);
+  padding-inline: var(--space-3);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: left;
+  cursor: pointer;
+}
+
+.nav-item[data-active] {
+  background: var(--nav-active);
+  font-weight: 500;
+}
+
+@media (hover: hover) {
+  .nav-item:hover:not([data-active]) {
+    background: var(--nav-active);
+  }
+}
+
+.nav-separator {
+  width: 100%;
+  height: 1px;
+  margin: var(--space-1) 0;
+  border: 0;
+  background: var(--border);
+}
+
+/* Main column */
+.main-column {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Fade over the bottom of the content (Figma "Rectangle 1": 64 px, background to transparent). It never takes clicks. */
+.main-column::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: auto 0 0 0;
+  height: 64px;
+  background: linear-gradient(to bottom, transparent, var(--background));
+  pointer-events: none;
+}
+
+.topbar {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-6);
+  background: var(--background);
+  border-bottom: 1px solid var(--border);
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 27px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+
+.status[data-tone="success"] .status-dot {
+  background: var(--success);
+}
+
+.status[data-tone="danger"] .status-dot {
+  background: var(--danger);
+}
+
+.shortcuts {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.shortcut {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.keys {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.key {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-control);
+  background: var(--surface-raised);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-xs);
+}
+
+/* Alerts: bordered box, tone icon, title, detail, optional action. */
+.alert {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-resting);
+}
+
+.alert-icon {
+  flex: none;
+  align-self: flex-start;
+  margin-top: 1px;
+}
+
+.alert[data-tone="info"] .alert-icon {
+  color: var(--text-secondary);
+}
+
+.alert[data-tone="warning"] .alert-icon {
+  color: var(--warning);
+}
+
+.alert[data-tone="danger"] .alert-icon {
+  color: var(--danger);
+}
+
+.alert-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.alert-title {
+  margin: 0;
+  font-weight: 500;
+}
+
+.alert-detail {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* Page */
+.page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  /* Room under the last block, so the fade at the bottom never hides it once scrolled to the end. */
+  padding-bottom: calc(var(--space-6) * 3);
+  overflow-y: auto;
+}
+
+.page-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 500;
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-display);
+}
+
+.page-soon {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+/* Dialog: Figma component "Fenêtre de dialogue" (header, content, right-aligned actions). */
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  background: var(--overlay-scrim);
+  backdrop-filter: blur(3.5px);
+}
+
+.dialog {
+  max-width: 100%;
+  overflow: hidden;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-floating);
+}
+
+.dialog-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.dialog-titles {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.dialog-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Same tone as the warning alerts of the top bar. */
+.dialog-icon {
+  flex: none;
+  color: var(--warning);
+}
+
+.dialog-title {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 500;
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-display);
+}
+
+.dialog-description {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.dialog-close {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-height-sm);
+  height: var(--control-height-sm);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: var(--background);
+  color: var(--foreground);
+  cursor: pointer;
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-6) var(--space-4);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.dialog-content p {
+  margin: 0;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+/* Figma "Bouton" (raised fill, no border: also the action of an alert) and the accent button. The selectors are
+   doubled so that they win over Arc's variant classes whatever the order of the stylesheets. */
+.action-button.action-button {
+  flex: none;
+  background: var(--surface-raised);
+  border-color: transparent;
+  color: var(--foreground);
+}
+
+/* Off: the same look as Arc's disabled secondary button, which the raised fill above would hide. */
+.action-button.action-button:disabled {
+  background: var(--surface-muted);
+  color: var(--text-muted);
+}
+
+.accent-button.accent-button {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+/* Fields: Figma "Champ". */
+.field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  box-sizing: border-box;
+  min-height: var(--control-height-sm);
+  padding-inline: var(--space-3);
+  background: var(--surface);
+  border-radius: var(--radius-control);
+  color: var(--text-muted);
+}
+
+.field input,
+.field-area {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  letter-spacing: inherit;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.field input::placeholder,
+.field-area::placeholder {
+  color: var(--text-muted);
+}
+
+.field-area {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 88px;
+  padding: var(--space-3);
+  resize: none;
+  background: var(--surface);
+  border-radius: var(--radius-control);
+}
+
+.search {
+  width: 274px;
+  max-width: 100%;
+}
+
+.quote {
+  margin: 0;
+  padding: var(--space-3);
+  background: var(--surface-muted);
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* A note already written (Figma component "Note"): a bordered card, so it does not look like the transcribed text above it. */
+.note-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.quote-label {
+  display: block;
+  margin-bottom: var(--space-1);
+  color: var(--text-muted);
+}
+
+.dialog-note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+}
+
+.dialog-error {
+  margin: 0;
+  color: var(--danger);
+  font-size: var(--text-xs);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* History */
+.page-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+}
+
+.entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+}
+
+.entry + .entry {
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* The row takes the raised fill under the pointer, and shows its buttons. */
+.entry:hover,
+.entry:focus-within,
+.entry[data-menu-open] {
+  background: var(--row-hover);
+}
+
+.entry-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-1);
+  max-width: 360px;
+  min-width: 0;
+}
+
+.entry-body {
+  margin: 0;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.entry-detail {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+}
+
+.entry-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+
+.entry-outcome {
+  color: var(--danger);
+}
+
+.entry-reason {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.entry-reason.entry-outcome {
+  color: var(--danger);
+}
+
+.entry-heard {
+  margin: var(--space-1) 0 0;
+  padding: var(--space-3);
+  background: var(--surface-muted);
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* Hidden until the row is hovered, focused with the keyboard, has its menu open, or is being listened to (the player stays in view). */
+.entry-actions {
+  display: flex;
+  flex: none;
+  gap: var(--space-2);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.entry:hover .entry-actions,
+.entry:focus-within .entry-actions,
+.entry[data-menu-open] .entry-actions,
+.entry[data-listening] .entry-actions {
+  opacity: 1;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--foreground);
+  cursor: pointer;
+}
+
+.icon-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (hover: hover) {
+  .icon-button:hover:not(:disabled) {
+    background: color-mix(in oklab, var(--foreground) 8%, transparent);
+  }
+}
+
+/* Dictionary (Figma screen 03): the intro, the form that adds a word, the search, then the words. */
+.page-intro {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.word-form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.word-form .field {
+  flex: 1;
+}
+
+/* In the window that changes a word, the two fields sit one above the other. */
+.word-form-stacked {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* The window is as light as the raised fields: they get a border and the muted fill to stand out. */
+.word-form-stacked .field {
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+}
+
+.field-raised {
+  background: var(--surface-raised);
+}
+
+.dictionary-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+/* What is heard instead of the word: stands out from the quiet line around it, so no quotation marks are needed. */
+.heard {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.word-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* As in the history: the buttons of a row only show under the pointer (or the keyboard focus), and the row takes the raised fill. */
+.dictionary-list .word-actions {
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.dictionary-list .settings-row:focus-within .word-actions {
+  opacity: 1;
+}
+
+.dictionary-list .settings-row:hover {
+  background: var(--row-hover);
+}
+
+.dictionary-list .settings-row:hover .word-actions {
+  opacity: 1;
+}
+
+/* Statistics (Figma screen 05): the title with its period filter, then cards two by two. */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+/* Arc's filter is taller than the Figma one (28 px, small text): its buttons are resized here. */
+.period-filter button {
+  min-height: calc(var(--space-6) + var(--space-1));
+  padding-inline: var(--space-2);
+  font-size: var(--text-xs);
+}
+
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-resting);
+}
+
+.stat-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--space-6);
+}
+
+.stat-card-label {
+  flex: 1;
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+/* Arc's counter is 36 px with a line of 1: it is brought to the Figma size (28 px, line of 1.2). */
+.stat-card-value > span {
+  font-size: var(--text-2xl);
+  line-height: 1.2;
+}
+
+/* The unit after the number ("WPM", "jours"): smaller and quieter than the number, resting on its baseline. The counter
+   of Arc puts the suffix last in its row of digits. */
+.stat-card-value[data-unit] > span > [aria-hidden="true"] > :last-child {
+  align-self: flex-end;
+  margin-bottom: var(--space-1);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  letter-spacing: var(--tracking-body);
+}
+
+/* The change badge of Arc, drawn as in the Figma: square corners of 8 px, a faint fill, no border. */
+.stat-change.stat-change {
+  --badge-border: transparent;
+  min-height: var(--space-6);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-control);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  letter-spacing: var(--tracking-body);
+  pointer-events: none;
+}
+
+.stat-change[data-tone="success"] {
+  --badge-background: var(--success-subtle);
+  --badge-foreground: var(--success);
+}
+
+.stat-change[data-tone="danger"] {
+  --badge-background: var(--danger-subtle);
+  --badge-foreground: var(--danger);
+}
+
+.stat-change[data-tone="neutral"] {
+  --badge-background: var(--surface-muted);
+  --badge-foreground: var(--text-secondary);
+}
+
+.stats-note {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+/* Activity (Figma "Activité"): a card with its title and view filter, then the calendar. */
+.activity-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-resting);
+}
+
+.activity-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.activity-title {
+  margin: 0;
+}
+
+.activity-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.activity-month {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+/* Baseline, not bottom edge: the big number has a taller line box than its label, so aligned boxes would
+   put the label under the foot of the digits. */
+.activity-average {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.activity-average-value {
+  font-size: var(--text-2xl);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: var(--tracking-display);
+}
+
+.activity-average-label {
+  color: var(--text-muted);
+}
+
+/* Month chart (Figma "Graphique en barres"). */
+.month-chart {
+  position: relative;
+}
+
+/* Only measured, never drawn: the bubble sits above it. */
+.chart-anchor {
+  fill: none;
+  pointer-events: none;
+}
+
+/* Invisible, but it takes the pointer: fill transparent still counts as painted. */
+.chart-hit {
+  fill: transparent;
+}
+
+.month-bars {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.chart-grid {
+  stroke: var(--border);
+}
+
+.chart-average {
+  stroke: var(--text-muted);
+  stroke-dasharray: 4 4;
+}
+
+.chart-bar {
+  fill: var(--chart-bar);
+}
+
+.chart-label {
+  fill: var(--text-muted);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-body);
+}
+
+.chart-label-strong {
+  fill: var(--text-secondary);
+}
+
+.heatmap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* The bubble of a day, for the calendar and the bars (as in the Arc "Activity Heatmap"): dark on light, light on dark, above the square it points at. */
+.day-tip {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.day-tip-bubble {
+  position: absolute;
+  bottom: var(--space-2);
+  left: 0;
+  display: grid;
+  width: max-content;
+  padding: var(--space-2) var(--space-3);
+  background: var(--foreground);
+  border: 1px solid color-mix(in oklab, var(--background) 14%, var(--foreground));
+  border-radius: var(--radius-control);
+  color: var(--background);
+  box-shadow: var(--shadow-raised);
+  transform-origin: 50% 100%;
+  white-space: nowrap;
+}
+
+.day-tip-primary {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.day-tip-secondary {
+  color: color-mix(in oklab, var(--background) 68%, var(--foreground));
+  font-size: var(--text-xs);
+  line-height: 1.35;
+}
+
+.heatmap-label {
+  fill: var(--text-muted);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-body);
+}
+
+/* The five shades, for the cells of the drawing (fill) and for the legend (background). */
+.heat-0 {
+  fill: var(--heatmap-0);
+  background: var(--heatmap-0);
+}
+
+.heat-1 {
+  fill: var(--heatmap-1);
+  background: var(--heatmap-1);
+}
+
+.heat-2 {
+  fill: var(--heatmap-2);
+  background: var(--heatmap-2);
+}
+
+.heat-3 {
+  fill: var(--heatmap-3);
+  background: var(--heatmap-3);
+}
+
+.heat-4 {
+  fill: var(--heatmap-4);
+  background: var(--heatmap-4);
+}
+
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+/* The squares of the Figma legend: 10 px, corners of 1 px, like the cells of the calendar. */
+.heatmap-key {
+  width: 10px;
+  height: 10px;
+  border-radius: 1px;
+}
+
+/* Settings (Figma screen 06): a title, then a bordered group whose rows are told apart by a thin line. */
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.section-title {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.settings-group {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+}
+
+/* One setting: its text on the left, its control on the right. */
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+}
+
+.settings-row + .settings-row {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.settings-row-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+  max-width: 360px;
+}
+
+.settings-row-control {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Switch: Figma "Interrupteur" (52 by 24 px), drawn with the selection control tokens of Arc. */
+.switch {
+  position: relative;
+  flex: none;
+  width: 52px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--control-track);
+  cursor: pointer;
+  transition: background-color var(--duration-standard) var(--ease-standard);
+}
+
+.switch::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--space-1) / 2);
+  left: calc(var(--space-1) / 2);
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-pill);
+  background: var(--control-thumb);
+  box-shadow: var(--control-thumb-shadow);
+  transition:
+    transform var(--duration-standard) var(--ease-standard),
+    background-color var(--duration-standard) var(--ease-standard);
+}
+
+.switch[aria-checked="true"] {
+  background: var(--control-on);
+}
+
+/* The thumb travels the width of the track minus its own width and its two margins. */
+.switch[aria-checked="true"]::after {
+  background: var(--control-thumb-on);
+  transform: translateX(28px);
+}
+
+.switch:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .switch[aria-checked="false"]:hover:not(:disabled) {
+    background: var(--control-track-hover);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .switch,
+  .switch::after {
+    transition: none;
+  }
+}
+
+/* Figma "Maintenir pour effacer": solid red at rest, smaller than Arc's default (height of a small control, padding of 8 px).
+   While it is held, a white fill sweeps over the red and the label turns red behind it. Doubled class so these win over the module's rules. */
+.settings-row .hold-button.hold-button {
+  --hold-ink: var(--on-danger);
+  --hold-fill: var(--on-danger);
+  --hold-on-fill: var(--danger-solid);
+  --hold-border: var(--danger-solid);
+  min-height: var(--control-height-sm);
+  padding: 0 var(--space-2);
+  background: var(--danger-solid);
+}
+
+.settings-row .hold-button.hold-button:not(:disabled):not([aria-disabled="true"]):hover {
+  background: var(--danger-solid);
+}
+
+.settings-row-title,
+.settings-row-detail,
+.settings-row-error {
+  margin: 0;
+}
+
+.settings-row-detail {
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+}
+
+.settings-row-error {
+  color: var(--danger);
+  font-size: var(--text-xs);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* Menu: Figma component "Menu". */
+.menu {
+  position: fixed;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  min-width: 178px;
+  padding: var(--space-2);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-raised);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--control-height-sm);
+  padding-inline: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: var(--text-xs);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .menu-item:hover {
+    background: color-mix(in oklab, var(--foreground) 6%, transparent);
+  }
+
+  /* Figma "Élément de menu / Supprimer survol": solid red, white text, in both modes. */
+  .menu-item[data-tone="danger"]:hover {
+    background: var(--danger-solid);
+    color: var(--on-danger);
+  }
+}
+
+/* A segmented control of icons only (theme in Settings): each segment is a square with its icon
+   exactly in the middle. Arc's own CSS is kept as copied; this only changes how the segments of
+   this one control are laid out. */
+.icon-segments button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  padding: 0;
+}
+
+.icon-segments svg {
+  display: block;
+}

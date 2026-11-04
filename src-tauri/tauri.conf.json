@@ -1,0 +1,52 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Aède",
+  "mainBinaryName": "aede",
+  "version": "0.1.0",
+  "identifier": "com.lukebanumoise.aede",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "macOSPrivateApi": true,
+    "windows": [
+      {
+        "title": "Aède",
+        "width": 880,
+        "height": 680,
+        "minWidth": 880,
+        "minHeight": 680,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true,
+        "visible": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "macOS": {
+      "frameworks": [
+        "target/debug/libggml.0.dylib",
+        "target/debug/libggml-base.0.dylib",
+        "target/debug/libggml-cpu.0.dylib",
+        "target/debug/libggml-metal.0.dylib",
+        "target/debug/libllama.0.dylib",
+        "target/debug/libllama-common.0.dylib"
+      ]
+    }
+  }
+}

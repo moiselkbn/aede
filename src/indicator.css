@@ -1,0 +1,7 @@
+/* The window is transparent: only what the page draws is visible (the pill, see pill.css). */
+html,
+body {
+  margin: 0;
+  background: transparent;
+  overflow: hidden;
+}

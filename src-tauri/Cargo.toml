@@ -1,0 +1,53 @@
+[package]
+name = "aede"
+version = "0.1.0"
+description = "A Tauri App"
+authors = ["Moïse Lukebanu"]
+license = "MIT"
+edition = "2024"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+# The `_lib` suffix may seem redundant but it is necessary
+# to make the lib name unique and wouldn't conflict with the bin name.
+# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
+name = "aede_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "macos-private-api"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-macos-permissions = "2.3.0"
+tauri-plugin-clipboard-manager = "2"
+core-graphics = "0.25"
+# AppKit calls that Tauri does not offer, for the indicator on the notch (see indicator.rs).
+# Already built as dependencies of Tauri: only the listed parts are used here.
+objc2 = "0.6"
+objc2-foundation = { version = "0.3", default-features = false, features = ["std", "NSGeometry", "NSError", "NSString", "NSDate", "NSTimeZone"] }
+objc2-app-kit = { version = "0.3", default-features = false, features = ["std", "NSResponder", "NSScreen", "NSWindow"] }
+# SMAppService, Apple's API to open the app at login (see login_item.rs).
+objc2-service-management = { version = "0.3", default-features = false, features = ["std", "objc2", "objc2-foundation", "SMAppService"] }
+cpal = "0.18.2"
+hound = "3.5.1"
+whisper-rs = { version = "0.16.0", features = ["metal"] }
+# Linked dynamically: whisper-rs and llama-cpp-2 each bring their own ggml, and linking both
+# statically crashes when the LLM starts (see docs/prototype-3.md).
+llama-cpp-2 = { version = "0.1.160", default-features = false, features = ["metal", "dynamic-link"] }
+
+
+# Read the optimization guideline for more details: https://tauri.app/concept/size/#cargo-configuration
+[profile.release]
+codegen-units = 1
+# No LTO: with it the final link fails on `___isPlatformVersionAtLeast` (needed by the Metal
+# code of ggml, in whisper-rs-sys). The heavy work is done in C++, so LTO would gain little.
+lto = false
+opt-level = 3
+# No `panic = "abort"`: dictation.rs catches a panic in the transcription and rewriting threads
+# (spawn_blocking) to paste the raw text instead. Aborting would close the whole app.
+strip = true
