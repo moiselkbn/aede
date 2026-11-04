@@ -74,7 +74,7 @@ Une combinaison avec Ctrl, Option, Maj ou Cmd est acceptée, ainsi que les touch
 
 ## Télécharger Aède
 
-1. Télécharge le fichier `Aède_0.1.0_aarch64.dmg` depuis la [page des versions](https://github.com/moiselkbn/aede/releases/latest). Il ne fonctionne que sur un Mac **Apple Silicon**.
+1. Télécharge le fichier `Aede_0.1.0_aarch64.dmg` depuis la [page des versions](https://github.com/moiselkbn/aede/releases/latest). Il ne fonctionne que sur un Mac **Apple Silicon**.
 2. Ouvre le `.dmg` et glisse Aède dans le dossier Applications.
 3. **Débloque l'app avant le premier lancement.** Aède n'est pas signé avec un compte Apple Developer, et ce n'est pas prévu : macOS le bloque donc (message « Aède est endommagé » ou « développeur non identifié »). Ce n'est pas un vrai dommage, c'est la protection de macOS contre les apps non signées. Dans le Terminal :
 
