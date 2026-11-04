@@ -20,7 +20,7 @@
 
 Dictée vocale pour Mac, 100 % locale. Tu maintiens un raccourci, tu parles en français, tu relâches : un texte propre, écrit, est collé là où se trouve ton curseur. Rien n'est envoyé sur internet.
 
-> **État : MVP en cours de validation.** Le code est complet, mais Aède n'a pas encore de version téléchargeable. Pour l'essayer, il faut le compiler depuis les sources (voir [Installer depuis les sources](#installer-depuis-les-sources)). Le code est sous [licence MIT](LICENSE).
+> **État : première version, en cours de validation.** Une version téléchargeable (`.dmg`, non signée) est disponible, voir [Télécharger Aède](#télécharger-aède). Tu peux aussi compiler l'app depuis les sources (voir [Installer depuis les sources](#installer-depuis-les-sources)). Le code est sous [licence MIT](LICENSE).
 
 ## Ce que fait Aède
 
@@ -72,10 +72,22 @@ Une combinaison avec Ctrl, Option, Maj ou Cmd est acceptée, ainsi que les touch
 - **L'historique, ta voix et les notes sont gardés en clair sur ton Mac**, dans `~/Library/Application Support/com.lukebanumoise.aede/` : `history.jsonl` (textes), `recordings/` (un fichier WAV par dictée quand le réglage est activé, environ 32 Ko par seconde de voix), `feedback.jsonl` (notes) et `dictionary.json` (tes paires du dictionnaire). Ces fichiers sont réservés à ton compte et ne quittent jamais la machine. Si tu dictes un mot de passe ou un message privé par erreur, il y reste jusqu'à « Tout effacer », qui supprime tout (dictionnaire compris). Rien n'est supprimé automatiquement.
 - **L'enregistrement de ta voix est un réglage, désactivé par défaut.** Il sert à la semaine de test de l'auteur. Tant que le réglage est désactivé, aucun audio n'est gardé.
 
-## Installer depuis les sources
+## Télécharger Aède
 
-> [!IMPORTANT]
-> Aède n'est pas signé avec un compte Apple Developer, et ce n'est pas prévu. Il n'existe donc pas de `.dmg` : tu compiles l'app toi-même.
+1. Télécharge le fichier `Aède_0.1.0_aarch64.dmg` depuis la [page des versions](https://github.com/moiselkbn/aede/releases/latest). Il ne fonctionne que sur un Mac **Apple Silicon**.
+2. Ouvre le `.dmg` et glisse Aède dans le dossier Applications.
+3. **Débloque l'app avant le premier lancement.** Aède n'est pas signé avec un compte Apple Developer, et ce n'est pas prévu : macOS le bloque donc (message « Aède est endommagé » ou « développeur non identifié »). Ce n'est pas un vrai dommage, c'est la protection de macOS contre les apps non signées. Dans le Terminal :
+
+   ```bash
+   xattr -dr com.apple.quarantine "/Applications/Aède.app"
+   ```
+
+   Sinon, ouvre l'app une fois, puis va dans Réglages Système, Confidentialité et sécurité, et clique sur « Ouvrir quand même ».
+4. Lance Aède : le premier lancement te guide (permissions, téléchargement des modèles, raccourcis).
+
+Si tu préfères ne pas faire confiance à un binaire non signé, compile l'app toi-même (section suivante). Les licences des composants embarqués sont dans [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md), aussi copié dans l'app.
+
+## Installer depuis les sources
 
 **Prérequis**
 
@@ -126,6 +138,7 @@ Si le collage ou l'enregistrement échoue, vérifie d'abord les permissions dans
 
 - Les autres applications que celles citées n'ont pas été essayées : le collage peut s'y comporter autrement.
 - La mesure réseau n'a pas encore été faite sur la version release.
+- Le `.dmg` n'a pas encore été essayé sur un Mac qui n'a jamais eu Aède : si le déblocage ou le premier lancement coince chez toi, ouvre une issue.
 
 **Prochain**
 

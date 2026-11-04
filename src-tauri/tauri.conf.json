@@ -38,7 +38,12 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
+    "resources": {
+      "../LICENSE": "LICENSE",
+      "../THIRD-PARTY-NOTICES.md": "THIRD-PARTY-NOTICES.md"
+    },
     "macOS": {
+      "signingIdentity": "-",
       "frameworks": [
         "target/debug/libggml.0.dylib",
         "target/debug/libggml-base.0.dylib",
