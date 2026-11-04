@@ -49,5 +49,22 @@ for resource in LICENSE THIRD-PARTY-NOTICES.md; do
   [ -f "$APP/Contents/Resources/$resource" ] || { echo "REFUSED: $resource is not in the app." >&2; exit 1; }
 done
 
+# The decisive check: the app must really start. With the hardened runtime (Tauri's default),
+# macOS refuses to load the ad hoc signed llama.cpp libraries and the app dies at launch.
+# It is started from a copy, with a throwaway HOME so that no real data or setting is touched.
+SMOKE="$(mktemp -d /tmp/aede-smoke.XXXXXX)"
+ditto "$APP" "$SMOKE/Aède.app"
+mkdir "$SMOKE/home"
+HOME="$SMOKE/home" "$SMOKE/Aède.app/Contents/MacOS/aede" > "$SMOKE/out.log" 2>&1 &
+PID=$!
+sleep 10
+if ! kill -0 "$PID" 2>/dev/null; then
+  echo "REFUSED: the app from the .dmg does not start:" >&2
+  head -n 5 "$SMOKE/out.log" >&2
+  exit 1
+fi
+kill "$PID"
+rm -rf "$SMOKE"
+
 echo "OK: $DMG"
 shasum -a 256 "$DMG"
